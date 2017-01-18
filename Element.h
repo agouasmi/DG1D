@@ -175,14 +175,14 @@ double Element<K,order>::basis_gradient(unsigned int node, double xi){
 	// Do the rest	
         for (j = 0; j < dofs_number; j++){
 		if (j != node){
-		temp = 1.;
-		for (i = 0; i < dofs_number; i++){
-			if ((i != node)&&(i != j)){	
+			for (i = 0; i < dofs_number; i++){
+				if ((i != node)&&(i != j)){	
 				xi_temp = xi_at_node(i);
 				temp *= (xi - xi_temp);
+				}
 			}
-		}
 		out += temp;
+		temp = 1.;
 		}
 	}
 	
@@ -231,12 +231,12 @@ void Element<K,order>::step(double dt){
 	for (node = 0; node < dofs_number; node++){
 		for (k = 0; k < K; k++){
 
-		dofs[node][k] = dofs_backup[node][k] +	 2*dt/(quad_weights[node]*size) * 
+		dofs[node][k] = dofs_backup[node][k]  -	 2*dt/(quad_weights[node]*size) * 
 					( (flux_face[1][k])*(basis_function(node,1)) - 
 					 (flux_face[0][k])*(basis_function(node,-1)) );
 
 			for (p = 0; p < quad_rule; p++){
-                                 dofs[node][k] -= 2*dt/(quad_weights[node]*size)
+                                 dofs[node][k] += 2*dt/(quad_weights[node]*size)
 					*(quad_weights[p])*(dofs_fluxes[p][k]) *
 							(basis_gradient(node,quad_points[p]));
 

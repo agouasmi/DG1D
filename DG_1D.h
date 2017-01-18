@@ -211,7 +211,7 @@ void DG_1D<K, order>::compute_fluxes(){
 		elements[ELEM].compute_face_values();
 	}
 	
-	/* Far left and far right boundary interfaces */
+	/* Left and right boundary interfaces */
 	wall(elements[0].dofs_face[0],K); 
 	wall(elements[N_E-1].dofs_face[1],K);
 
@@ -259,16 +259,17 @@ void DG_1D<K, order>::advance_RK(double dt, int RK){
 
 	int ELEM, level;
 
-	for (level = RK; level > 0; level--){
-		for (ELEM = 0; ELEM < N_E; ELEM++){
-			elements[ELEM].save_dofs();
-		}
+	for (ELEM = 0; ELEM < N_E; ELEM++){
+		elements[ELEM].save_dofs();
+	}
 		
+	for (level = RK; level > 0; level--){
 		compute_fluxes();
 	
 		for (ELEM = 0; ELEM < N_E; ELEM++){
 			elements[ELEM].step(dt/(double) level);
 		}
 	}
+
 	t+=dt;
 }

@@ -47,10 +47,10 @@ void Roe_flux(double * out, double * q_left, double * q_right, int K){
 		x[k] = (q_right[k] - q_left[k]);
 	}
 
-	out[0] = 0.5*(FL[0] + FR[0]) + 0.5 / a * ( abs(L1) * (-L2*x[0] + x[1]) + 
+	out[0] = 0.5*(FL[0] + FR[0]) - 0.5 / a * ( abs(L1) * (-L2*x[0] + x[1]) + 
 							abs(L2) * (L1*x[0] - x[1]) );
 
-	out[1] = 0.5*(FL[1] + FR[1]) + 0.5 / a * ( abs(L1) * (-L2*L1*x[0] + L1*x[1]) +
+	out[1] = 0.5*(FL[1] + FR[1]) - 0.5 / a * ( abs(L1) * (-L2*L1*x[0] + L1*x[1]) +
 							abs(L2) * (L2*L1*x[0] - L2*x[1]) );
 
 }
